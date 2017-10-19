@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
@@ -32,5 +33,11 @@ public class SpringMvcApiConfig extends WebMvcConfigurerAdapter {
         argumentResolvers.add(new JSONArrayHandlerMethodArgumentResolver());
 
         super.addArgumentResolvers(argumentResolvers);
+    }
+
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
+        returnValueHandlers.add(new JsonMethodReturnValueHandler());
+        super.addReturnValueHandlers(returnValueHandlers);
     }
 }
