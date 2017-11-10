@@ -1,6 +1,5 @@
 package easy.http.rpc.springmvc;
 
-import com.alibaba.fastjson.JSON;
 import easy.http.rpc.JSONStringToObject;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -9,9 +8,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class JSONArrayHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
