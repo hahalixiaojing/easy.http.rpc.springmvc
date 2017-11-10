@@ -22,7 +22,6 @@ public class InterfaceApiController {
     private ApplicationContext context;
 
     @PostMapping("/execute/{servcie}/{methodName}")
-    @JSONArguments
     @ResponseBody
     public Object execute(@PathVariable("servcie") String service, @PathVariable("methodName") String methodName, String args) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException {
 
