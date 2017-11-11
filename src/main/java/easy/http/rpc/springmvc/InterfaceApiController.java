@@ -48,7 +48,7 @@ public class InterfaceApiController {
         Object[] params = new Object[exeMethod.getParameterTypes().length];
 
         for (int i = 0; i < exeMethod.getParameterTypes().length; i++) {
-            Object o = JSONStringToObject.methodParameterDataToObject(exeMethod, i, strings.get(0));
+            Object o = JSONStringToObject.methodParameterDataToObject(exeMethod, i, strings.get(i));
             params[i] = o;
         }
 
