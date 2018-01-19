@@ -7,6 +7,7 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 public class RpcExceptionReslover implements HandlerExceptionResolver {
@@ -22,8 +23,14 @@ public class RpcExceptionReslover implements HandlerExceptionResolver {
             public void render(Map<String, ?> map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
 
                 Object ex = map.get("ex");
+                String exName = "";
+                if (ex instanceof InvocationTargetException) {
+                    exName = ((InvocationTargetException) ex).getTargetException().getClass().getName();
+                } else {
+                    exName = ex.getClass().getName();
+                }
                 httpServletResponse.setContentType("application/json;charset=utf-8");
-                httpServletResponse.addHeader("explicitEx", ex.getClass().getName());
+                httpServletResponse.addHeader("explicitEx", exName);
                 httpServletResponse.getWriter().write(JSON.toJSONString(ex));
                 httpServletResponse.flushBuffer();
 
