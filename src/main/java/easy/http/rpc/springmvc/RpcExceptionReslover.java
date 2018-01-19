@@ -24,14 +24,17 @@ public class RpcExceptionReslover implements HandlerExceptionResolver {
 
                 Object ex = map.get("ex");
                 String exName = "";
+                Object realEx = null;
                 if (ex instanceof InvocationTargetException) {
                     exName = ((InvocationTargetException) ex).getTargetException().getClass().getName();
+                    realEx = ((InvocationTargetException) ex).getTargetException();
                 } else {
                     exName = ex.getClass().getName();
+                    realEx = ex;
                 }
                 httpServletResponse.setContentType("application/json;charset=utf-8");
                 httpServletResponse.addHeader("explicitEx", exName);
-                httpServletResponse.getWriter().write(JSON.toJSONString(ex));
+                httpServletResponse.getWriter().write(JSON.toJSONString(realEx));
                 httpServletResponse.flushBuffer();
 
             }
