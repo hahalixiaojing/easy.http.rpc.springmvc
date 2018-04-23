@@ -4,14 +4,18 @@ import com.alibaba.fastjson.JSON;
 import easy.http.rpc.JSONStringToObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -54,4 +58,24 @@ public class InterfaceApiController {
 
         return exeMethod.invoke(bean, params);
     }
+
+    @ExceptionHandler(Exception.class)
+    protected void exceptionHandler(HttpServletResponse response, Exception ex) throws IOException {
+        String exName;
+        Object realEx;
+        if (ex instanceof InvocationTargetException) {
+            exName = ((InvocationTargetException) ex).getTargetException().getClass().getName();
+            realEx = ((InvocationTargetException) ex).getTargetException();
+        } else {
+            exName = ex.getClass().getName();
+            realEx = ex;
+        }
+
+        response.setContentType("application/json;charset=utf-8");
+        response.addHeader("explicitEx", exName);
+        response.getWriter().write(JSON.toJSONString(realEx));
+        response.flushBuffer();
+    }
+
+
 }
